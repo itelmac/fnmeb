@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Login</title>
+  <link rel="shortcut icon" href="img/favicon.png" />
+  <link rel="icon" href="img/favicon.png" type="image/x-icon">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dist/css/custom-css.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body class="hold-transition login-page">
+
+  <div class="login-box">
+    
+    <!-- /.login-logo -->
+    <div class="card">
+      
+      <div class="card-body login-card-body">
+                
+        <p class="login-box-msg">Sign in to start your session</p>
+
+        <form id="loginForm" action="server.php" method="post">
+          <input type="hidden" name="login">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Admin ID" name="adminid" id="adminid" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" name="password" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" id="form_submit" class="btn btn-primary btn-block">Sign in</button>
+          <div class="statusMsg"></div>
+          
+        </form>
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+  <!-- /.login-box -->
+
+  <!-- jQuery -->
+  <script src="../plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/adminlte.js"></script>
+  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function(){
+      // Submit form data via Ajax
+      $("#loginForm").on('submit', function(e){
+          e.preventDefault();
+          $.ajax({
+              type: 'POST',
+              url: 'server.php',
+              data: $(this).serialize(),
+              dataType: 'json',
+              encode: true,
+              beforeSend: function(){
+                  $('#form_submit').html('<span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span> Authenticating... ');
+                  $('#loginForm').css("opacity",".5");
+              },
+              success: function(response){
+                  $('.statusMsg').html('');
+                  if(response.status == 1){
+                      $("#form_submit").html('<span class="spinner-border spinner-border-sm float-right" role="status" aria-hidden="true"></span> Redirecting...');
+                      $('.statusMsg').html('<p class="text-success text-center">'+response.message+'</p>');
+                      window.location = 'home';
+                  }else{
+                      $('.statusMsg').html('<p class="text-danger text-center">'+response.message+'</p>');
+                      $('#loginForm').css("opacity","");
+                      $("#form_submit").html("Sign in");
+                  }
+                  
+              }
+          });
+      });
+        
+    });
+  </script>
+
+  
+</body>
+
+</html>

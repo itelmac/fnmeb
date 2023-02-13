@@ -1,0 +1,39 @@
+/*Form Validation Styles*/
+.messages.webform-errors {
+  background-position: 8px 8px;
+  color: #A91C1D !important;
+  font-weight: bold;
+}
+.messages.webform-errors.error ul {
+  list-style: disc !important;
+}
+.messages.webform-errors.error ul li::before {
+  display: none;
+}
+label.error, .error, .error p {
+  color: #A91C1D !important;
+}
+label.error - label:not(.error) {
+  display: none;
+}
+.messages.webform-errors,
+label.error + [type="text"],
+label.error + [type="password"],
+label.error + [type="date"],
+label.error + [type="datetime"],
+label.error + [type="datetime-local"],
+label.error + [type="month"],
+label.error + [type="week"],
+label.error + [type="email"],
+label.error + [type="number"],
+label.error + [type="search"],
+label.error + [type="tel"],
+label.error + [type="time"],
+label.error + [type="url"],
+label.error + [type="color"],
+label.error + textarea,
+textarea.error,
+select.error {
+  border-color: #A91C1D;
+  background-color: #fff0f0;
+}
